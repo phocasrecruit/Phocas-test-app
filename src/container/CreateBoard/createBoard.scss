@@ -1,0 +1,29 @@
+.whole-create {
+  height: 100vh;
+  padding: 30px;
+  .create-container {
+    background: #ffffff;
+    margin-top: 150px;
+
+    .heading {
+      padding: 20px 0px;
+    }
+    .button {
+      padding-top: 35px;
+    }
+    background: #dad4d4;
+    border-radius: 8px 8px 8px 8px;
+    .heading {
+      padding-top: 25px;
+    }
+    .form-fields {
+      padding: 20px;
+      .each-row {
+        color: red;
+      }
+    }
+  }
+  .modal-button {
+    background-image: linear-gradient(to top, #973ab7, #673ab7) !important;
+  }
+}
