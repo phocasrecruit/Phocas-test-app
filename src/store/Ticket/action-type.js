@@ -1,0 +1,6 @@
+export const GET_TICKETS = "GET_TICKETS";
+export const GET_TICKET = "GET_TICKET";
+export const UPDATE_TICKET = "LOGIUPDATE_TICKETN_USER";
+export const ADD_TICKET = "ADD_TICKET";
+export const DELETE_TICKET_ACTION = "DELETE_TICKET_ACTION";
+export const NULLIFY_VALUE = "NULLIFY_VALUE";
