@@ -2,7 +2,7 @@ import { Button, CircularProgress } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Header } from "../../component/index";
@@ -21,6 +21,7 @@ const ViewTicket = props => {
       boardId: boardId
     };
     props.getBoard(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   const handleUpdate = id => {
