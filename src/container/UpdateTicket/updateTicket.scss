@@ -22,9 +22,8 @@
         color: red;
       }
     }
-    .button {
-      display: flex;
-      justify-content: center;
-    }
+  }
+  .modal-button {
+    background-image: linear-gradient(to top, #973ab7, #673ab7) !important;
   }
 }
