@@ -13,7 +13,6 @@ import "./viewTicket.scss";
 
 const ViewTicket = props => {
   const boardId = localStorage.getItem("boardID");
-  const [field, setField] = useState(false);
   const history = useHistory();
 
   useEffect(() => {
@@ -22,9 +21,6 @@ const ViewTicket = props => {
       boardId: boardId
     };
     props.getBoard(data);
-    setField(true);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   const handleUpdate = id => {
@@ -32,21 +28,21 @@ const ViewTicket = props => {
     history.push("/updateTicket");
   };
 
-  const handleDelete = id => {
+  async function handleDelete(id) {
     let data = {
       organisationId: organisationId,
       ticketId: id
     };
     localStorage.setItem("ticketId", id);
-    props.deleteTicket(data);
-  };
+    await props.deleteTicket(data);
+    alert("Ticket Deleted");
+  }
 
   const handleAdd = () => {
-    setField(false);
     history.push("/createTicket");
   };
 
-  if (!props.board.hasOwnProperty("tickets") || !field) {
+  if (!props.board.hasOwnProperty("tickets")) {
     return <CircularProgress />;
   }
 
