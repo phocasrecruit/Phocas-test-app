@@ -1,11 +1,11 @@
 This is a test Project for Phocas. 
 
 
-Path : /                        -  Allow users to create a board 
-Path : /viewBoard               -  Allow you to view the created Board
-Path : /createTicket            -  Allow users to create a ticket 
-Path : /updateTicket            -  Allow users to update a ticket
-Path : /viewTickets             -  Allow users to view the tickets in the particular board
+1. Path : /                        -  Allow users to create a board 
+2. Path : /viewBoard               -  Allow you to view the created Board
+3. Path : /createTicket            -  Allow users to create a ticket 
+4. Path : /updateTicket            -  Allow users to update a ticket
+5. Path : /viewTickets             -  Allow users to view the tickets in the particular board
 
 
 Steps followed to run this application.
