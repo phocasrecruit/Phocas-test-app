@@ -1,11 +1,11 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { Button } from "@material-ui/core";
+import { Button, MenuItem, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { connect } from "react-redux";
-import { Header, InputField, Modal, SubmitButton } from "../../component/index";
 import { useHistory } from "react-router-dom";
+import { Header, InputField, Modal, SubmitButton } from "../../component/index";
 import { addTicket } from "../../store/Ticket/index";
 import "./createTicket.scss";
 
@@ -89,8 +89,20 @@ const CreateTicket = props => {
             <Row className="each-row">
               <Col>
                 <Controller
-                  as={InputField}
-                  label={"Ticket Status"}
+                  as={
+                    <TextField
+                      variant="outlined"
+                      fullWidth
+                      name="status"
+                      label={"Ticket Status"}
+                      id="select"
+                      value="TODO"
+                      select
+                    >
+                      <MenuItem value="TODO">TODO</MenuItem>
+                      <MenuItem value="DONE">DONE</MenuItem>
+                    </TextField>
+                  }
                   name="input.status"
                   rules={{ required: true }}
                   control={control}

@@ -70,7 +70,7 @@ const UpdateTicket = props => {
 
   return (
     <div className="whole-create">
-      <Header />
+      <Header name="Update Ticket" />
       <div className="container create-container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
           <div className="form-fields">
