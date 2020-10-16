@@ -15,6 +15,21 @@ export const GET_TICKET = gql`
   }
 `;
 
+export const GET_SINGLE_TICKET = gql`
+  query ticket($organisationId: ID!, $ticketId: ID!) {
+    ticket(organisationId: $organisationId, ticketId: $ticketId) {
+      id
+      name
+      description
+      status
+      visible
+      board {
+        name
+      }
+    }
+  }
+`;
+
 export const PUT_TICKET = gql`
   mutation putTicket(
     $organisationId: ID!

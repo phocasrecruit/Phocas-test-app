@@ -30,6 +30,7 @@ export const GET_BOARD = gql`
       createdAt
       updatedAt
       tickets {
+        id
         name
         description
         status
