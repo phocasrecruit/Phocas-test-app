@@ -1,56 +1,84 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { Button } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
 import { connect } from "react-redux";
 import { Header, InputField, Modal, SubmitButton } from "../../component/index";
-import { useHistory } from "react-router-dom";
-import { addTicket } from "../../store/Ticket/index";
-import "./createTicket.scss";
+import { organisationId } from "../../query/utils";
+import {
+  getSingleTicket,
+  nullifyValue,
+  updateTicket
+} from "../../store/Ticket/index";
+import "./updateTicket.scss";
 
-const CreateTicket = props => {
+const UpdateTicket = props => {
   const [isModalOpen, toggleModal] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [field, setField] = useState(false);
-  const history = useHistory();
-
-  const { handleSubmit, control, errors } = useForm({
-    defaultValues: ""
+  const ticketId = localStorage.getItem("ticketId");
+  const { handleSubmit, control, register, errors, setValue } = useForm({
+    mode: "onBlur"
   });
 
   useEffect(() => {
-    if (props.ticket) {
-      if (props.ticket.hasOwnProperty("addTicket") && field) {
-        if (props.ticket.addTicket.hasOwnProperty("putTicket")) {
-          setDialogMessage("Ticket Created Successfully");
-          toggleModal(true);
-        }
+    let reqData = {
+      organisationId: organisationId,
+      ticketId: ticketId
+    };
+    populateValues(reqData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  async function populateValues(reqData) {
+    props.getSingleTicket(reqData);
+    setField(true);
+  }
+
+  useEffect(() => {
+    if (props.ticket.hasOwnProperty("singleTicket") && field) {
+      let values = props.ticket.singleTicket.ticket;
+      setValue("input.name", values.name);
+      setValue("input.description", values.description);
+      setValue("input.status", values.status);
+      setField(false);
+    }
+
+    if (props.ticket.hasOwnProperty("singleTicket")) {
+      if (props.ticket.singleTicket.hasOwnProperty("putTicket")) {
+        toggleModal(true);
+        setDialogMessage("updated Successfully");
+        props.nullifyValue();
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props]);
 
   const handleModalClick = () => {
+    alert("done");
     toggleModal(false);
-    history.push("/viewTickets");
+    props.history.push("/viewTickets");
   };
 
   async function onSubmit(formValues) {
-    console.log(formValues);
-    let boardId = localStorage.getItem("boardID");
-    formValues.organisationId = "4f8de28a-3190-4f4c-81f7-d8f12c069af1";
-    formValues.boardId = boardId;
-    formValues.input.visible = true;
-    props.addTicket(formValues);
-    setField(true);
+    formValues.organisationId = organisationId;
+    formValues.boardId = localStorage.getItem("boardID");
+    formValues.ticketId = props.ticket.singleTicket.ticket.id;
+    formValues.input.visible = props.ticket.singleTicket.ticket.visible;
+    props.updateTicket(formValues);
   }
 
   return (
     <div className="whole-create">
-      <Header name="Create Ticket" />
+      <Header />
       <div className="container create-container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
+          <Typography className="heading" variant="h3">
+            {" "}
+            Update Ticket
+          </Typography>
           <div className="form-fields">
             <Row className="each-row">
               <Col>
@@ -60,6 +88,7 @@ const CreateTicket = props => {
                   name="input.name"
                   rules={{ required: true }}
                   control={control}
+                  ref={register}
                   id={"outlined-full-width"}
                 />
               </Col>
@@ -77,6 +106,7 @@ const CreateTicket = props => {
                   name="input.description"
                   rules={{ required: true }}
                   control={control}
+                  ref={register}
                   id={"outlined-full-width"}
                 />
               </Col>
@@ -92,6 +122,7 @@ const CreateTicket = props => {
                   as={InputField}
                   label={"Ticket Status"}
                   name="input.status"
+                  ref={register}
                   rules={{ required: true }}
                   control={control}
                   id={"outlined-full-width"}
@@ -104,19 +135,20 @@ const CreateTicket = props => {
               />
             </Row>
           </div>
-          <div className="button">
-            <Button
-              color="primary"
-              variant="contained"
-              size="large"
-              control={control}
-              type="submit"
-              label="Register"
-            >
-              Submit
-            </Button>
-          </div>
-
+          <Row className="each-row">
+            <Col className="button">
+              <Button
+                color="primary"
+                variant="contained"
+                size="large"
+                control={control}
+                type="submit"
+                label="Register"
+              >
+                Submit
+              </Button>
+            </Col>
+          </Row>
           <div>
             <br />
           </div>
@@ -141,5 +173,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addTicket }
-)(CreateTicket);
+  { getSingleTicket, updateTicket, nullifyValue }
+)(UpdateTicket);

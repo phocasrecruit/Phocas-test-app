@@ -1,37 +1,72 @@
-import { useQuery } from "@apollo/client";
-import { CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Header } from "../../component/index";
-import { GET_BOARD } from "../../query/board";
+import { organisationId } from "../../query/utils";
+import { getBoard } from "../../store/Board/index";
+import { deleteTicket } from "../../store/Ticket/index";
 import "./viewTicket.scss";
 
 const ViewTicket = props => {
-  const [ticketData, setData] = useState("");
-  let boardId = localStorage.getItem("boardID");
-  let organisationId = "4f8de28a-3190-4f4c-81f7-d8f12c069af1";
-  let { data } = useQuery(GET_BOARD, {
-    variables: {
-      organisationId: organisationId,
-      boardId: boardId
-    }
-  });
+  const boardId = localStorage.getItem("boardID");
+  const [field, setField] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
-    setData(data);
-  }, [data]);
+    let data = {
+      organisationId: organisationId,
+      boardId: boardId
+    };
+    props.getBoard(data);
+    setField(true);
 
-  if (!ticketData) {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props]);
+
+  const handleUpdate = id => {
+    localStorage.setItem("ticketId", id);
+    history.push("/updateTicket");
+  };
+
+  const handleDelete = id => {
+    let data = {
+      organisationId: organisationId,
+      ticketId: id
+    };
+    localStorage.setItem("ticketId", id);
+    props.deleteTicket(data);
+  };
+
+  const handleAdd = () => {
+    setField(false);
+    history.push("/createTicket");
+  };
+
+  if (!props.board.hasOwnProperty("tickets") || !field) {
     return <CircularProgress />;
   }
 
   return (
     <div>
       <Header name="View Tickets" />
-      {ticketData.board.tickets.map(ticket => (
-        <Card className="ticket-root">
+      <div className="create-ticket">
+        <Button
+          className="button"
+          size="small"
+          variant="outlined"
+          color="primary"
+          onClick={handleAdd}
+        >
+          ADD TICKET
+        </Button>
+      </div>
+
+      {props.board.tickets.board.tickets.map(ticket => (
+        <Card key={ticket.id} className="ticket-root">
           <CardContent className="ticket-content">
             <Typography
               gutterBottom
@@ -56,10 +91,41 @@ const ViewTicket = props => {
               <b>Status</b> {ticket.status}
             </Typography>
           </CardContent>
+          <div class="actions">
+            <Button
+              size="small"
+              color="primary"
+              variant="outlined"
+              className="button"
+              onClick={() => {
+                handleUpdate(ticket.id);
+              }}
+            >
+              UPDATE TICKET
+            </Button>
+            <Button
+              className="button"
+              size="small"
+              variant="outlined"
+              color="primary"
+              onClick={() => {
+                handleDelete(ticket.id);
+              }}
+            >
+              DELETE TICKET
+            </Button>
+          </div>
         </Card>
       ))}
     </div>
   );
 };
 
-export default ViewTicket;
+const mapStateToProps = state => {
+  return state;
+};
+
+export default connect(
+  mapStateToProps,
+  { getBoard, deleteTicket }
+)(ViewTicket);
