@@ -1,7 +1,7 @@
 This is a test Project for Phocas. 
 
 
-Path : /                        -  Allow users to create a board
+Path : /                        -  Allow users to create a board 
 Path : /viewBoard               -  Allow you to view the created Board
 Path : /createTicket            -  Allow users to create a ticket 
 Path : /updateTicket            -  Allow users to update a ticket
