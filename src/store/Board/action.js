@@ -6,8 +6,10 @@ export const getBoard = reqData => {
   return async dispatch => {
     let { data } = await client.query({
       query: GET_BOARD,
-      variables: reqData
+      variables: reqData,
+      fetchPolicy: "no-cache"
     });
+    console.log("data", data);
     dispatch({ type: GET_BOARD_ACTION, payload: data });
   };
 };
