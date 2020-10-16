@@ -1,6 +1,5 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { Button } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import { Controller, useForm } from "react-hook-form";
@@ -57,7 +56,6 @@ const UpdateTicket = props => {
   }, [props]);
 
   const handleModalClick = () => {
-    alert("done");
     toggleModal(false);
     props.history.push("/viewTickets");
   };
@@ -75,10 +73,6 @@ const UpdateTicket = props => {
       <Header />
       <div className="container create-container">
         <form className="form" onSubmit={handleSubmit(onSubmit)}>
-          <Typography className="heading" variant="h3">
-            {" "}
-            Update Ticket
-          </Typography>
           <div className="form-fields">
             <Row className="each-row">
               <Col>
